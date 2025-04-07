@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jeeva Reminder</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700;900&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+  <!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- DataTables CSS & JS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'DM Sans', sans-serif;
+      background: url("assets/images/background.png") no-repeat center center;
+      background-size: cover;
+      color: white;
+      overflow: hidden;
+    }
+
+    .top-bar {
+      position: absolute;
+      top: 30px;
+      left: 100px;
+    }
+
+    .datetime-container {
+      display: flex;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+    }
+
+    .datetime-box {
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: 500;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+    }
+
+    .datetime-box.time {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .top-right {
+      position: absolute;
+      top: 30px;
+      right: 100px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .top-right img {
+      width: 44px;
+      height: 44px;
+    }
+
+    .logout-btn-top {
+  width: 163px;
+  height: 53px;
+  background: white;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 6px 16px;
+  line-height: 100%;
+}
+
+
+
+
+    .app-icons {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 12px;
+     
+      padding: 18px 30px;
+      border-radius: 25px;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+
+    .app-icons img {
+      width: 88px;
+      height: 88px;
+      background: transparent;
+      padding: 0;
+      border-radius: 0;
+      box-shadow: none;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .app-icons img:hover {
+      transform: scale(1.08);
+    }
+
+    .siri-animate {
+      width: 103px;
+      height: 103px;
+      animation: rotate 10s linear infinite, pulseGlow 3s ease-in-out infinite;
+      transform-origin: center;
+      transition: transform 0.4s ease, filter 0.4s ease;
+      filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.4));
+    }
+
+    .siri-animate:hover {
+      transform: scale(1.1) rotate(0deg);
+      filter: drop-shadow(0 0 30px rgba(255, 0, 255, 0.7));
+    }
+
+    .top-center {
+  position: absolute;
+  top: 20px; /* Adjust vertical position */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+}
+
+
+    .status-circle {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 22.94px;
+      height: 22.94px;
+      border-radius: 50%;
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      top: 304.94px;
+      left: 575px;
+    }
+
+    .status-circle.red {
+      background-color: #ff5f57;
+    }
+
+    .status-circle.orange {
+      background-color: #febc2e;
+    }
+
+    .status-circle.green {
+      background-color: #28c840;
+    }
+
+    .status-circle img {
+      width: 24px;
+      height: 24px;
+    }
+
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% {
+        filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.6));
+      }
+      50% {
+        filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.9));
+      }
+    }
+
+
+
+
+.table thead th {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  font-weight: 600;
+}
+
+.table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+.btn-sm i {
+  font-size: 14px;
+}
+.btn-sm {
+  padding: 6px 14px;
+  font-size: 14px;
+  border-radius: 8px;
+}
+
+table {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.table-bordered {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.table-bordered th,
+.table-bordered td {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.mt-3 {
+  margin-top: 1rem;
+}
+.btn-success {
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 8px;
+}
+
+.table-header-sorting {
+  background-color: #007bff; /* bright blue */
+  color: #ffffff;
+}
+
+.table-header-sorting th {
+  padding: 12px;
+  font-weight: bold;
+  position: relative;
+  white-space: nowrap;
+}
+
+.sort-icon {
+  font-size: 10px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+  /* Extra small devices (phones, less than 576px) */
+  @media (max-width: 575.98px) {
+    .top-bar, .top-right, .top-center {
+      position: static;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .top-center img.siri-animate {
+      width: 70px;
+      height: 70px;
+      margin: auto;
+    }
+
+    .datetime-container {
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .logout-btn-top {
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .container {
+      margin-top: 80px !important;
+      padding: 10px;
+    }
+
+    .app-icons {
+      flex-direction: column;
+      gap: 10px;
+      padding: 10px;
+    }
+
+    .app-icons img {
+      width: 60px;
+      height: 60px;
+    }
+  }
+
+  /* Small devices (landscape phones, 576px and up) */
+  @media (min-width: 576px) and (max-width: 767.98px) {
+    .top-center img.siri-animate {
+      width: 80px;
+      height: 80px;
+    }
+
+    .top-bar, .top-right {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .datetime-container {
+      flex-direction: column;
+    }
+  }
+
+  /* Medium devices (tablets, 768px and up) */
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    .top-center img.siri-animate {
+      width: 90px;
+      height: 90px;
+    }
+
+    .logout-btn-top {
+      font-size: 13px;
+      padding: 6px 10px;
+    }
+
+    .app-icons img {
+      width: 72px;
+      height: 72px;
+    }
+  }
+
+  /* Large devices (desktops, 992px and up) */
+  @media (min-width: 992px) and (max-width: 1199.98px) {
+    .container {
+      padding: 25px;
+    }
+
+    .app-icons img {
+      width: 80px;
+      height: 80px;
+    }
+  }
+
+  /* Extra large devices (large desktops, 1200px and up) */
+  @media (min-width: 1200px) {
+    .container {
+      padding: 30px;
+    }
+  }
+
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="datetime-container">
+      <div class="datetime-box time" id="current-time">12:33:32 PM</div>
+      <div class="datetime-box date" id="current-date">20-03-2025</div>
+    </div>
+  </div>
+
+  <div class="top-center">
+  <img src="assets/images/logo.png" class="logo siri-animate" alt="Logo" />
+</div>
+
+
+  <div class="top-right">
+    <img src="assets/images/user.png" alt="User Icon" />
+    <button class="logout-btn-top" onclick="window.location.href='index.html'">Logout</button>
+  </div>
+
+
+
+
+<div class="container" style="max-width: 95%; margin-top: 150px; backdrop-filter: blur(15px); background-color: rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 20px; color: white;">
+  <div class="table-responsive">
+    <table id="myTable" class="display" style="width:100%">
+      <thead style="background-color: rgba(255,255,255,0.2);">
+        <div class="d-flex justify-content-between align-items-center px-4 py-3 mb-4 gap-4" style="background: transparent; border-radius: 10px;">
+  <!-- Mac-style buttons -->
+  <div class="d-flex justify-content-start gap-2 mb-3">
+        <div class="status-circle red"><i class="fas fa-plus"></i></div>
+        <div class="status-circle orange"><i class="fas fa-minus"></i></div>
+        <div class="status-circle green">
+          <img src="assets/images/green Symbol.png" alt="Green Symbol" />
+        </div>
+      </div>
+
+  <!-- Action buttons -->
+  <div class="d-flex align-items-center gap-3" style="margin-left: auto; padding-right: 40px;">
+    <button class="btn btn-outline-light btn-sm fw-bold">
+      Import <i class="fas fa-download ms-1"></i>
+    </button>
+    <button class="btn btn-light btn-sm fw-bold">
+      Export <i class="fas fa-upload ms-1"></i>
+    </button>
+    <button class="btn btn-outline-light btn-sm">
+      <i class="fas fa-expand"></i>
+    </button>
+  </div>
+
+
+  <!-- Top Controls Bar -->
+<div class="d-flex justify-content-between align-items-center px-4 py-3 mb-4" style="background: transparent; border-radius: 10px;">
+
+</div>
+
+
+        <tr class="table-header-sorting">
+    <th>Project</th>
+      <th>ROTO</th>
+      <th>ETA</th>
+      <th>Status</th>
+      <th>CAM</th>
+      <th>My Notes to Next PC</th>
+      <th>Actions</th>
+  </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Website Redesign</td>
+          <td>UI/UX</td>
+          <td>22-03-2025</td>
+          <td><span class="badge bg-success">In Progress</span></td>
+          <td>Arjun</td>
+          <td>Wireframes done, move to prototype</td>
+          <td>
+  <button class="btn btn-sm btn-light text-dark me-1" title="Edit">
+    <i class="fas fa-edit"></i>
+  </button>
+  <button class="btn btn-sm btn-danger me-1" title="Delete">
+    <i class="fas fa-trash-alt"></i>
+  </button>
+  <button class="btn btn-sm btn-warning text-dark" title="Reminder">
+    <i class="fas fa-bell"></i>
+  </button>
+</td>
+
+        </tr>
+        <!-- Repeat rows as needed -->
+      </tbody>
+    </table>
+  </div>
+  <div class="d-flex justify-content-end mt-3">
+  <button class="btn btn-success fw-bold">Add +</button>
+</div>
+</div>
+
+
+
+
+  <div class="app-icons">
+    <img src="assets/images/sheets.png" alt="Sheet" title="Sheets" />
+    <img src="assets/images/calendar.png" alt="Calendar" title="Calendar" />
+    <img src="assets/images/reminders.png" alt="Reminders" title="Reminders" />
+    <img src="assets/images/projects.png" alt="Projects" title="Projects" />
+  </div>
+
+  <script>
+    function updateTime() {
+      const now = new Date();
+      const date = now.toLocaleDateString('en-GB');
+      const time = now.toLocaleTimeString();
+      document.getElementById('current-date').textContent = date;
+      document.getElementById('current-time').textContent = time;
+    }
+    updateTime();
+    setInterval(updateTime, 1000);
+
+
+    // Function to show sidebar initially for 2 seconds
+    window.onload = function() {
+      setTimeout(function() {
+        document.getElementById('profileSidebar').classList.add('visible');
+      }, 0); // Show immediately when page loads
+      
+      setTimeout(function() {
+        document.getElementById('profileSidebar').classList.remove('visible');
+      }, 2000); // Hide after 2 seconds
+    }
+
+    // Show the profile sidebar when the cursor is on the right side of the screen
+    document.addEventListener('mousemove', function(e) {
+      const profileSidebar = document.getElementById('profileSidebar');
+      if (e.clientX > window.innerWidth - 50) { // Check if the cursor is on the right side
+        profileSidebar.classList.add('visible'); // Show sidebar
+      } else {
+        profileSidebar.classList.remove('visible'); // Hide sidebar when cursor is not on the right
+      }
+    });
+
+    $(document).ready(function () {
+    $('#myTable').DataTable();
+  });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const siriLogo = document.querySelector('.siri-animate');
+
+    // Scroll animation for Siri logo
+    window.addEventListener('scroll', function () {
+      const scrolled = window.scrollY;
+      if (siriLogo) {
+        siriLogo.style.transform = `scale(${1 + scrolled * 0.001}) rotate(${scrolled}deg)`;
+      }
+    });
+
+    // Reposition app icons on resize
+    function repositionAppIcons() {
+      const icons = document.querySelector('.app-icons');
+      if (window.innerWidth < 768) {
+        icons.style.flexDirection = 'column';
+      } else {
+        icons.style.flexDirection = 'row';
+      }
+    }
+    repositionAppIcons();
+    window.addEventListener('resize', repositionAppIcons);
+
+    // Add button functionality
+    document.querySelector('.btn-success.fw-bold')?.addEventListener('click', () => {
+      const table = document.querySelector('#myTable tbody');
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td contenteditable="true">New Project</td>
+        <td contenteditable="true">Department</td>
+        <td contenteditable="true">DD-MM-YYYY</td>
+        <td><span class="badge bg-warning">Pending</span></td>
+        <td contenteditable="true">CAM</td>
+        <td contenteditable="true">Notes</td>
+        <td>
+          <button class="btn btn-sm btn-light text-dark me-1 edit-btn" title="Edit">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="btn btn-sm btn-danger me-1 delete-btn" title="Delete">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+          <button class="btn btn-sm btn-warning text-dark reminder-btn" title="Reminder">
+            <i class="fas fa-bell"></i>
+          </button>
+        </td>
+      `;
+      table.appendChild(row);
+      attachRowEvents(row);
+    });
+
+    // Function to attach events to dynamically added rows
+    function attachRowEvents(row) {
+      row.querySelector('.edit-btn')?.addEventListener('click', () => {
+        alert('Edit mode enabled. You can now change text directly in the row.');
+      });
+
+      row.querySelector('.delete-btn')?.addEventListener('click', () => {
+        const reason = prompt('Please enter a reason for deleting this entry:');
+        if (reason) {
+          row.remove();
+          alert('Row deleted with reason: ' + reason);
+        } else {
+          alert('Deletion canceled.');
+        }
+      });
+
+      row.querySelector('.reminder-btn')?.addEventListener('click', () => {
+        alert('Displaying existing reminders (functionality to be added).');
+      });
+    }
+
+    // Existing buttons
+    document.querySelectorAll('#myTable tbody tr').forEach(attachRowEvents);
+
+    document.querySelector('.btn-outline-light:has(.fa-download)')?.addEventListener('click', () => {
+      alert('Import functionality triggered.');
+    });
+
+    document.querySelector('.btn-light:has(.fa-upload)')?.addEventListener('click', () => {
+      alert('Export functionality triggered.');
+    });
+
+    document.querySelector('.btn-outline-light:has(.fa-expand)')?.addEventListener('click', () => {
+      const docEl = document.documentElement;
+      if (!document.fullscreenElement) {
+        docEl.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    });
+  });
+  </script>
+</body>
+</html>

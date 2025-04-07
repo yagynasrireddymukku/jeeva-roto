@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title> Login</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      height: 100%;
+    }
+
+    .bg-purple {
+      background: url("assets/images/background.png");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .logo {
+      width: 120px;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    .login-logo {
+  width: 103px;
+  height: 103px;
+}
+.jeeva-heading {
+  font-family: 'Jost', sans-serif;
+  font-weight: 400;
+  font-size: 50px;
+  line-height: 1;
+  letter-spacing: 0;
+  width: 116px;
+  height: 52px;
+  margin: 0 auto;
+}
+
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      width: 100%;
+      max-width: 400px;
+    }
+    .text-center p{
+      font-size: 20px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Loader Screen with 3-stage images -->
+  <div id="loader" class="d-flex justify-content-center align-items-center vh-100 bg-purple">
+    <img id="loaderImage" src="assets/images/loader.png" alt="Loader Image" class="logo">
+  </div>
+
+  <!-- Login Screen -->
+  <div id="loginScreen" class="d-none vh-100 bg-purple">
+    <div class="container h-100 d-flex justify-content-center align-items-center">
+      <div class="card p-4 text-white glass-card">
+        <div class="text-center mb-3">
+          <img src="assets/images/logo.png" alt="Logo" class="login-logo mb-2">
+          <h4 class="jeeva-heading">Jeeva</h4>
+
+          <p class="subtext">Manage your workflow, track bids, and stay ahead with our powerful offline-ready SaaS platform.</p>
+        </div>
+        <form>
+          <div class="mb-3">
+            <input type="text" class="form-control bg-transparent text-white border-white" placeholder="Username">
+          </div>
+          <div class="mb-3">
+            <input type="password" class="form-control bg-transparent text-white border-white" placeholder="Password">
+          </div>
+          <div class="d-grid">
+  <a href="dashboard.html" class="btn btn-light text-center">Log in</a>
+</div>
+
+          <div class="text-end mt-2">
+            <a href="#" class="text-white-50 small">Forgot Password?</a>
+          </div>
+        </form>
+        <div class="mt-4 text-center small text-white-50">
+          <p>Need help?</p>
+          <a href="#" class="text-white-50">Contact Support</a> |
+          <a href="#" class="text-white-50">Privacy Policy</a> |
+          <a href="#" class="text-white-50">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.onload = function () {
+      const loaderImage = document.getElementById('loaderImage');
+      const imagePaths = [
+        'assets/images/loader.png',
+        'assets/images/loader1.png',
+        'assets/images/loader2.png'
+      ];
+
+      let index = 0;
+
+      const interval = setInterval(() => {
+        index++;
+        if (index < imagePaths.length) {
+          loaderImage.src = imagePaths[index];
+        } else {
+          clearInterval(interval); // Stop after 3rd image
+        }
+      }, 2000); // Change image every 1 seconds
+
+      // After 5 seconds, show login screen
+      setTimeout(() => {
+        document.getElementById('loader').classList.add('d-none');
+        document.getElementById('loginScreen').classList.remove('d-none');
+      }, 5000);
+    };
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Home</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Jost', sans-serif;
+      background: url("assets/images/background.png") no-repeat center center;
+      background-size: cover;
+      color: white;
+      overflow: hidden;
+    }
+
+    .top-bar {
+      position: absolute;
+      top: 50px;
+      left: 150px;
+    }
+
+    .datetime-container {
+      display: flex;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+    }
+
+    .datetime-box {
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: 500;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+    }
+
+    .datetime-box.time {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .top-right {
+      position: absolute;
+      top: 50px;
+      right: 150px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .top-right img {
+      width: 44px;
+      height: 44px;
+    }
+
+    .logout-btn {
+      background: white;
+      color: black;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 12px 34px;
+      margin: 10px;
+      box-shadow: 0 0 0 4px rgba(204, 204, 204, 0.5);
+      transition: all 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      background-color: #f0f0f0;
+      box-shadow: 0 0 0 4px rgba(153, 153, 153, 0.5);
+    }
+
+    .center-content {
+      position: absolute;
+      top: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .center-content img.logo {
+      width: 103px;
+      height: 103px;
+      margin-bottom: 20px;
+    }
+
+    .main-heading {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 900;
+      font-size: 70px;
+      line-height: 1;
+      letter-spacing: 0;
+      text-align: center;
+      width: 1214px;
+      height: 190px;
+      margin: 0 auto 20px auto;
+    }
+
+    .subtext {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 36px;
+      letter-spacing: 0;
+      text-align: center;
+      width: 893px;
+      height: 72px;
+      margin: 0 auto;
+      color: rgba(255, 255, 255, 0.7);
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    .app-icons {
+      position: absolute;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 16px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 25px 40px;
+      border-radius: 25px;
+      border: 2px solid rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(12px);
+    }
+
+    .app-icons img {
+      width: 88px;
+      height: 88px;
+      background: transparent;
+      padding: 0;
+      border-radius: 0;
+      box-shadow: none;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .app-icons img:hover {
+      transform: scale(1.08);
+    }
+
+    .siri-animate {
+      width: 120px;
+      height: 120px;
+      animation: rotate 10s linear infinite, pulseGlow 3s ease-in-out infinite;
+      transform-origin: center;
+      transition: transform 0.4s ease, filter 0.4s ease;
+      filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.4));
+    }
+
+    .siri-animate:hover {
+      transform: scale(1.1) rotate(0deg);
+      filter: drop-shadow(0 0 30px rgba(255, 0, 255, 0.7));
+    }
+
+    /* Smooth continuous spin */
+    @keyframes rotate {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Soft pulsing glow */
+    @keyframes pulseGlow {
+      0%,
+      100% {
+        filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.6));
+      }
+      50% {
+        filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.9));
+      }
+    }
+
+    .profile-sidebar {
+      position: fixed;
+      top: 0;
+      right: -536px;
+      width: 536px;
+      height: 100%;
+      background: #ffffff0d;
+      border-left: 1px solid #ffffff;
+      backdrop-filter: blur(50px);
+      color: white;
+      padding: 20px;
+      display: block;
+      transition: right 0.5s ease;
+    }
+
+    .profile-sidebar.visible {
+      right: 0;
+    }
+
+    .profile-sidebar img {
+      width: 376px;
+      height: 451px;
+      top: 50px;
+      left: 80px;
+      position: relative;
+      border-radius: 28px;
+    }
+
+    /* Name container style with clean gradient effect */
+    .text-container {
+      position: relative;
+      width: 295px;
+      margin-top: -120px;
+      margin-left: 182px;
+      padding: 20px;
+    }
+
+    .text-3d {
+      font-family: 'Satoshi Variable', 'Arial', sans-serif;
+      font-weight: 900;
+      font-size: 48px;
+      line-height: 100%;
+      letter-spacing: 0%;
+      color: #cccccc;
+      margin: 0;
+      padding: 0;
+      position: relative;
+      text-shadow: 0 1px 0 #c0c0c0, 0 2px 0 #b9b9b9, 0 3px 0 #b1b1b1, 0 4px 0 #aaaaaa, 0 5px 0 #a2a2a2, 0 6px 1px rgba(0, 0, 0, .1), 0 0 5px rgba(0, 0, 0, .1), 0 1px 3px rgba(0, 0, 0, .3), 0 3px 5px rgba(0, 0, 0, .2), 0 5px 10px rgba(0, 0, 0, .25), 0 10px 10px rgba(0, 0, 0, .2), 0 20px 20px rgba(0, 0, 0, .15);
+    }
+
+    .name {
+      margin-bottom: 15px;
+    }
+
+    .profile-details-card {
+      position: absolute;
+      width: 482px;
+      height: 180px;
+      top: 525px;
+      left: 80px;
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 20px;
+      box-shadow: 0 0 0 2px transparent, 0 0 0 4px rgba(255, 255, 255, 0.5);
+    }
+
+    .profile-details-card h3 {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .profile-details-card p {
+      font-size: 14px;
+      margin: 5px 0;
+    }
+
+    .logout-btn-sidebar {
+      width: 187px;
+      height: 62px;
+      border-radius: 10px;
+      padding: 10px;
+      background: #ff3838;
+      color: white;
+      font-size: 16px;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-top: 280px;
+    }
+
+    .logout-btn-sidebar:hover {
+      background-color: #ff1f1f;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <div class="datetime-container">
+      <div class="datetime-box date" id="current-date">20-03-2025</div>
+      <div class="datetime-box time" id="current-time">12:33:32 PM</div>
+    </div>
+  </div>
+
+  <!-- Top Right User and Logout -->
+  <div class="top-right">
+    <img src="assets/images/user.png" alt="User Icon" />
+    <button class="logout-btn" onclick="window.location.href='index.html'">Logout</button>
+  </div>
+
+  <!-- Center Logo, Heading and Subtext -->
+  <div class="center-content">
+    <img id="logoImage" src="assets/images/siri.gif" class="logo siri-animate" alt="Logo" onclick="siriVoiceAndChangeImage()" style="width: 200px; height: 200px; border-radius: 50%; object-fit: cover;" />
+
+    <h1 class="main-heading">
+      Project Jeeva: Secure, Seamless,<br>
+      and Always Accessible.
+    </h1>
+    <p class="subtext">
+      Manage active sheets, set reminders, track future projects, and monitor performance—all in one
+      seamless, offline-ready SaaS platform. Stay organized, stay efficient!
+    </p>
+  </div>
+
+  <!-- Profile Sidebar -->
+  <div class="profile-sidebar" id="profileSidebar">
+    <img src="assets/images/pic.png" alt="User Image" />
+    <div class="text-container">
+      <h1 class="text-3d name">RAM</h1>
+    </div>
+
+    <div class="profile-details-card">
+      <h3>RAM</h3>
+      <p><strong>Name:</strong> RAM </p>
+      <p><strong>Role:</strong> UI UX Designer</p>
+      <p><strong>ID:</strong> RM001</p>
+      <p><strong>Last Login:</strong> 19-03-2025 (1 Day ago)</p>
+    </div>
+    <button class="logout-btn-sidebar">Log out</button>
+  </div>
+
+  <!-- Bottom App Icons -->
+  <div class="app-icons">
+    <a href="data sheets.html">
+      <img src="assets/images/sheets.png" alt="Sheet" title="Sheets" />
+    </a>
+    <a href="calendar.html">
+      <img src="assets/images/calendar.png" alt="Calendar" title="Calendar" />
+    </a>
+    <a href="reminders.html">
+      <img src="assets/images/reminders.png" alt="Reminders" title="Reminders" />
+    </a>
+    <a href="projects.html">
+      <img src="assets/images/projects.png" alt="Projects" title="Projects" />
+    </a>
+  </div>
+
+  <!-- JS to Update Time -->
+  <script>
+    function updateTime() {
+      const now = new Date();
+      const date = now.toLocaleDateString('en-GB');
+      const time = now.toLocaleTimeString();
+      document.getElementById('current-date').textContent = date;
+      document.getElementById('current-time').textContent = time;
+    }
+
+    updateTime();
+    setInterval(updateTime, 1000);
+
+    window.onload = function() {
+      setTimeout(function() {
+        document.getElementById('profileSidebar').classList.add('visible');
+      }, 0);
+      setTimeout(function() {
+        document.getElementById('profileSidebar').classList.remove('visible');
+      }, 2000);
+    }
+
+    document.addEventListener('mousemove', function(e) {
+      const profileSidebar = document.getElementById('profileSidebar');
+      if (e.clientX > window.innerWidth - 50) {
+        profileSidebar.classList.add('visible');
+      } else {
+        profileSidebar.classList.remove('visible');
+      }
+    });
+
+    // Navigation Links from App Icons
+    document.querySelectorAll('.app-icons img').forEach(icon => {
+      icon.addEventListener('click', function () {
+        const altText = this.alt.toLowerCase();
+        if (altText.includes('sheet')) {
+          window.location.href = 'sheets.html';
+        } else if (altText.includes('calendar')) {
+          window.location.href = 'calendar.html';
+        } else if (altText.includes('reminders')) {
+          window.location.href = 'reminders.html';
+        } else if (altText.includes('projects')) {
+          window.location.href = 'projects.html';
+        }
+      });
+    });
+ // Siri voice and image toggle
+    let isSiriActive = false;  // Flag to track Siri's state
+
+    function siriVoiceAndChangeImage() {
+      const logo = document.getElementById("logoImage");
+
+      if (isSiriActive) {
+        logo.src = "assets/images/siri.gif";  // Revert to the original logo
+        isSiriActive = false;  // Deactivate Siri
+        window.speechSynthesis.cancel();  // Stop any ongoing speech
+      } else {
+        logo.src = "assets/images/siri voice.gif";  // Change to the Siri voice logo
+        const synth = window.speechSynthesis;
+        const message = new SpeechSynthesisUtterance('Hello, I am Jeeva, your virtual assistant!');
+        
+        // Optionally set voice and language
+        const voices = synth.getVoices();
+        message.voice = voices[0];  // Set voice (change index to find different voices)
+        message.pitch = 1.2; // Adjust the pitch
+        message.rate = 1;    // Adjust the rate of speech
+
+        synth.speak(message);  // Play the voice
+        isSiriActive = true;  // Activate Siri
+      }
+    }
+
+    // Speech recognition for voice commands
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = "en-US";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onstart = function() {
+      console.log("Voice recognition started");
+    };
+
+    recognition.onspeechend = function() {
+      console.log("Voice recognition ended");
+    };
+
+    recognition.onerror = function(event) {
+      console.log("Error occurred: " + event.error);
+    };
+
+    recognition.onresult = function(event) {
+      const speechResult = event.results[0][0].transcript.toLowerCase();
+      console.log("Recognized speech: " + speechResult);
+
+      if (speechResult === "hi") {
+        const synth = window.speechSynthesis;
+        const message = new SpeechSynthesisUtterance('Hi there, how can I assist you today?');
+        synth.speak(message);
+      } else if (speechResult.includes("how are you")) {
+        const synth = window.speechSynthesis;
+        const message = new SpeechSynthesisUtterance('I am doing great, thank you!');
+        synth.speak(message);
+      } else {
+        const synth = window.speechSynthesis;
+        const message = new SpeechSynthesisUtterance('Sorry, I did not understand that.');
+        synth.speak(message);
+      }
+    };
+
+    // Start listening for voice command when clicking on logo
+    document.getElementById('logoImage').addEventListener('click', function() {
+      recognition.start();
+    });
+  </script>
+</body>
+</html>
